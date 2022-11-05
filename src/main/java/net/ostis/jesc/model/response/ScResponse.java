@@ -15,4 +15,6 @@ public class ScResponse {
 
     private List<ScResponsePayload> payload;
 
+    private List<String> errors;
+
 }
