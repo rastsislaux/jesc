@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public enum ScRequestType {
+public enum ScCommand {
 
     CREATE_ELEMENTS("create_elements"),
     CHECK_ELEMENTS("check_elements"),

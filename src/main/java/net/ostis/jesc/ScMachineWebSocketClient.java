@@ -1,5 +1,6 @@
 package net.ostis.jesc;
 
+import lombok.Builder;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -7,12 +8,13 @@ import java.net.URI;
 
 public class ScMachineWebSocketClient extends WebSocketClient {
 
+    @Builder
     public ScMachineWebSocketClient(URI serverUri) {
         super(serverUri);
     }
 
     @Override
-    public void onOpen(ServerHandshake handshakedata) {
+    public void onOpen(ServerHandshake handshakeData) {
 
     }
 

@@ -7,14 +7,14 @@ import org.java_websocket.client.WebSocketClient;
 
 import java.net.URI;
 
-public class ScMachine implements AutoCloseable {
+public class ScClient implements AutoCloseable {
 
     private WebSocketClient wsc;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
     @SneakyThrows
-    public ScMachine(String host, int port) {
+    public ScClient(String host, int port) {
         var wsUrl = String.format("ws://%s:%d/ws_json", host, port);
         wsc = new ScMachineWebSocketClient(
                 new URI(wsUrl)
