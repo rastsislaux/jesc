@@ -14,7 +14,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AddrPayloadEntry implements ScReponsePayloadEntry {
+public class AddrPayloadEntry implements ScResponsePayloadEntry {
 
     @JsonValue
     private final Long scAddr;

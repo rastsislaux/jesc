@@ -1,11 +1,13 @@
 package net.ostis.jesc.client.model.element;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 @Data
 @Builder(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public final class ScReference {
     private ScReferenceType type;
     private Long value;

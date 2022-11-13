@@ -11,6 +11,7 @@ import lombok.Getter;
 import net.ostis.jesc.client.model.element.ScReference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)
@@ -19,14 +20,19 @@ import java.util.ArrayList;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SearchByTemplatePayloadEntry extends ArrayList<ScReference> implements ScRequestPayloadEntry {
 
+    private SearchByTemplatePayloadEntry(List<ScReference> scReferences) {
+        super(scReferences);
+    }
 
+    public static SearchByTemplatePayloadEntry of(ScReference... scReferences) {
+        return new SearchByTemplatePayloadEntry(List.of(scReferences));
+    }
 
     public static ScRequestPayloadEntry scs(String scs) {
         return new SearchByScsPayloadEntry(scs);
     }
 
     @Builder(access = AccessLevel.PRIVATE)
-    @AllArgsConstructor(access = AccessLevel.PRIVATE)
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private record SearchByScsPayloadEntry(@JsonValue String scs) implements ScRequestPayloadEntry { }

@@ -1,12 +1,12 @@
 package net.ostis.jesc.client.model.response;
 
 import lombok.Data;
-import net.ostis.jesc.client.model.response.payload.entry.ScReponsePayloadEntry;
+import net.ostis.jesc.client.model.response.payload.ScResponsePayload;
 
 import java.util.List;
 
 @Data
-public class ScResponse<T extends ScReponsePayloadEntry> {
+public class ScResponse<T extends ScResponsePayload> {
 
     private Long id;
 
@@ -14,7 +14,7 @@ public class ScResponse<T extends ScReponsePayloadEntry> {
 
     private Boolean event;
 
-    private List<T> payload;
+    private T payload;
 
     private List<String> errors;
 

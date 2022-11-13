@@ -63,7 +63,7 @@ public class ScContextCommon implements ScContext {
      * @param response response from SC server
      */
     public void throwErrorsIfPresent(ScResponse<?> response) {
-        if (Objects.nonNull(response.getErrors())) {
+        if (Objects.nonNull(response.getErrors()) && !response.getErrors().isEmpty()) {
             var str = String.join(", ", response.getErrors());
             throw new ScContextRuntimeException(str);
         }

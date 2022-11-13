@@ -15,5 +15,5 @@ import java.util.ArrayList;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class AddrListPayloadEntry extends ArrayList<Long> implements ScReponsePayloadEntry {
+public class AddrListPayloadEntry extends ArrayList<Long> implements ScResponsePayloadEntry {
 }
