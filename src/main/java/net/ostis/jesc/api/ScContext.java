@@ -1,5 +1,7 @@
 package net.ostis.jesc.api;
 
+import net.ostis.jesc.api.iterator.Iterable3;
+import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.element.ScType;
 
 import java.util.Optional;
@@ -57,4 +59,5 @@ public interface ScContext {
      */
     Long createArc(ScType type, Long scAddrOut, Long scAddrIn);
 
+    Iterable3 iterator3(ScReference first, ScReference second, ScReference third);
 }

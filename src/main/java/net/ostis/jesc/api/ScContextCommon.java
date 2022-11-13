@@ -1,6 +1,7 @@
 package net.ostis.jesc.api;
 
 import net.ostis.jesc.api.exception.ScContextRuntimeException;
+import net.ostis.jesc.api.iterator.Iterable3;
 import net.ostis.jesc.client.ScClient;
 import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.element.ScType;
@@ -9,8 +10,10 @@ import net.ostis.jesc.client.model.request.ScRequestType;
 import net.ostis.jesc.client.model.request.payload.PayloadList;
 import net.ostis.jesc.client.model.request.payload.entry.CreateElementsPayloadEntry;
 import net.ostis.jesc.client.model.request.payload.entry.KeynodesPayloadEntry;
+import net.ostis.jesc.client.model.request.payload.entry.SearchByTemplatePayloadEntry;
 import net.ostis.jesc.client.model.response.ScResponse;
 import net.ostis.jesc.client.model.response.ScResponseAddrs;
+import net.ostis.jesc.client.model.response.ScSearchByTemplateResponse;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -208,6 +211,35 @@ public class ScContextCommon implements ScContext {
     @Override
     public Long createArc(ScType type, Long scAddrOut, Long scAddrIn) {
         return createEdge(type, scAddrOut, scAddrIn); // That is literally how it's implemented in SC machine
+    }
+
+    /**
+     * Iterate through triplets.
+     * <pre>
+     *  First     Third
+     *  |          |
+     *  V          V
+     * () ======> ()
+     *      Ʌ
+     *      |
+     *    Second
+     * </pre>
+     * @param first
+     * @param second
+     * @param third
+     * @return
+     */
+    @Override
+    public Iterable3 iterator3(ScReference first, ScReference second, ScReference third) {
+        var req = new ScRequest<>(
+                99L,
+                ScRequestType.SEARCH_BY_TEMPLATE,
+                PayloadList.of(SearchByTemplatePayloadEntry.of(first, second, third)));
+
+        var response = scClient.sendRequest(req, ScSearchByTemplateResponse.class);
+        throwErrorsIfPresent(response);
+
+        return new Iterable3(response.getPayload().getAddrs());
     }
 
 }
