@@ -25,10 +25,11 @@ public class ScContextCommon implements ScContext {
 
     /**
      * This constructor accepts an already created ScClient. Example:<br>
+     * <pre>
      * {@code
      * ScClient scClient = new ScClient("localhost", 8090);
      * ScApi scApi = new ScApi(scClient);
-     * ScContext context = new ScApi(scClient); }
+     * ScContext context = new ScApi(scClient); } </pre>
      * @param scApi scApi instance
      */
     public ScContextCommon(ScApi scApi) {
@@ -179,12 +180,12 @@ public class ScContextCommon implements ScContext {
     /**
      * Iterate through triplets.
      * <pre>
-     *  First     Third
-     *  |          |
-     *  V          V
-     * () ======> ()
-     *      Ʌ
-     *      |
+     * First      Third
+     *  |           |
+     *  V           V
+     * ( ) ======> ( )
+     *       Ʌ
+     *       |
      *    Second
      * </pre>
      * @param first

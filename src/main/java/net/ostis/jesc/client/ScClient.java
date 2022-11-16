@@ -7,6 +7,19 @@ import net.ostis.jesc.client.model.request.ScRequest;
 
 import java.net.URI;
 
+/**
+ * Communication with SC machine.
+ *
+ * Usage example:
+ * <pre>
+ * {@code
+ * try (var client = new ScClient("localhost", 8090) {
+ *     var api = new ScApi(scClient);
+ *     ...
+ * }
+ * }
+ * </pre>
+ */
 @Slf4j
 public class ScClient implements AutoCloseable {
 

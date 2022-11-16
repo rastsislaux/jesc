@@ -1,8 +1,8 @@
 package net.ostis.jesc.context;
 
-import net.ostis.jesc.context.iterator.Iterable3;
 import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.element.ScType;
+import net.ostis.jesc.context.iterator.Iterable3;
 
 import java.util.Optional;
 
@@ -59,5 +59,21 @@ public interface ScContext {
      */
     Long createArc(ScType type, Long scAddrOut, Long scAddrIn);
 
+    /**
+     * Iterate through triplets.
+     * <pre>
+     * First      Third
+     *  |           |
+     *  V           V
+     * ( ) ======> ( )
+     *       Ʌ
+     *       |
+     *    Second
+     * </pre>
+     * @param first
+     * @param second
+     * @param third
+     * @return
+     */
     Iterable3 iterator3(ScReference first, ScReference second, ScReference third);
 }
