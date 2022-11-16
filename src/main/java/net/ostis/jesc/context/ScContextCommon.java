@@ -1,19 +1,11 @@
-package net.ostis.jesc.api;
+package net.ostis.jesc.context;
 
-import net.ostis.jesc.api.exception.ScContextRuntimeException;
-import net.ostis.jesc.api.iterator.Iterable3;
-import net.ostis.jesc.client.ScClient;
+import net.ostis.jesc.api.ScApi;
 import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.element.ScType;
-import net.ostis.jesc.client.model.request.ScRequest;
-import net.ostis.jesc.client.model.request.ScRequestType;
-import net.ostis.jesc.client.model.request.payload.PayloadList;
-import net.ostis.jesc.client.model.request.payload.entry.CreateElementsPayloadEntry;
-import net.ostis.jesc.client.model.request.payload.entry.KeynodesPayloadEntry;
-import net.ostis.jesc.client.model.request.payload.entry.SearchByTemplatePayloadEntry;
 import net.ostis.jesc.client.model.response.ScResponse;
-import net.ostis.jesc.client.model.response.ScResponseAddrs;
-import net.ostis.jesc.client.model.response.ScSearchByTemplateResponse;
+import net.ostis.jesc.context.exception.ScContextRuntimeException;
+import net.ostis.jesc.context.iterator.Iterable3;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -27,7 +19,7 @@ public class ScContextCommon implements ScContext {
     private static final String FAILED_TO_CREATE_NODE_MSG = "Failed to create an node for unknown reason. Check SC server logs for more info";
     private static final String FAILED_TO_CREATE_ELEMENT_MSG = "Failed to create an element for unknown reason. Check SC server logs for more info";
 
-    private final ScClient scClient;
+    private final ScApi scApi;
 
     private Long idCounter = 0L;
 
@@ -35,22 +27,12 @@ public class ScContextCommon implements ScContext {
      * This constructor accepts an already created ScClient. Example:<br>
      * {@code
      * ScClient scClient = new ScClient("localhost", 8090);
-     * ScContext context = new ScContextCommon(scClient); }
-     * @param scClient sc client instance
+     * ScApi scApi = new ScApi(scClient);
+     * ScContext context = new ScApi(scClient); }
+     * @param scApi scApi instance
      */
-    public ScContextCommon(ScClient scClient) {
-        this.scClient = scClient;
-    }
-
-    /**
-     * This constructor accepts host and port. Example:<br>
-     * {@code ScContext context = new ScContextCommon("localhost", 8090);}
-     *
-     * @param host the host where SC server is running (e.g. localhost)
-     * @param port the port that exposes SC server (usually 8090)
-     */
-    public ScContextCommon(String host, int port) {
-        this.scClient = new ScClient(host, port);
+    public ScContextCommon(ScApi scApi) {
+        this.scApi = scApi;
     }
 
     /**
@@ -89,15 +71,10 @@ public class ScContextCommon implements ScContext {
      */
     @Override
     public Optional<Long> findBySystemIdentifier(String systemIdentifier) {
-        var request = new ScRequest<>(
-                makeId(),
-                ScRequestType.KEYNODES,
-                PayloadList.of(
-                        KeynodesPayloadEntry.find(systemIdentifier)
-                )
-        );
+        var response = scApi.keynodes()
+                .find(systemIdentifier)
+                .execute();
 
-        var response = scClient.sendRequest(request, ScResponseAddrs.class);
         throwErrorsIfPresent(response);
         var scAddr = response.getPayload().get(0).getScAddr();
 
@@ -118,15 +95,10 @@ public class ScContextCommon implements ScContext {
      */
     @Override
     public Long resolveBySystemIdentifier(String systemIdentifier, ScType type) {
-        var request = new ScRequest<>(
-                makeId(),
-                ScRequestType.KEYNODES,
-                PayloadList.of(
-                        KeynodesPayloadEntry.resolve(systemIdentifier, type)
-                )
-        );
+        var response = scApi.keynodes()
+                .resolve(systemIdentifier, type)
+                .execute();
 
-        var response = scClient.sendRequest(request, ScResponseAddrs.class);
         throwErrorsIfPresent(response);
         var scAddr = response.getPayload().get(0).getScAddr();
 
@@ -145,15 +117,10 @@ public class ScContextCommon implements ScContext {
      */
     @Override
     public Long createNode(ScType type) {
-        var request = new ScRequest<>(
-                makeId(),
-                ScRequestType.CREATE_ELEMENTS,
-                PayloadList.of(
-                        CreateElementsPayloadEntry.node(type)
-                )
-        );
+        var response = scApi.createElements()
+                .node(type)
+                .execute();
 
-        var response = scClient.sendRequest(request, ScResponseAddrs.class);
         throwErrorsIfPresent(response);
         var scAddr = response.getPayload().get(0).getScAddr();
 
@@ -175,18 +142,14 @@ public class ScContextCommon implements ScContext {
      */
     @Override
     public Long createEdge(ScType type, Long scAddrOut, Long scAddrIn) {
-        var payload = CreateElementsPayloadEntry.edge(
-                type,
-                ScReference.addr(scAddrOut),
-                ScReference.addr(scAddrIn)
-        );
-        var request = new ScRequest<>(
-                makeId(),
-                ScRequestType.CREATE_ELEMENTS,
-                PayloadList.of(payload)
-        );
+        var response = scApi.createElements()
+                .edge(
+                        type,
+                        ScReference.addr(scAddrOut),
+                        ScReference.addr(scAddrIn)
+                )
+                .execute();
 
-        var response = scClient.sendRequest(request, ScResponseAddrs.class);
         throwErrorsIfPresent(response);
         var scAddr = response.getPayload().get(0).getScAddr();
 
@@ -231,12 +194,10 @@ public class ScContextCommon implements ScContext {
      */
     @Override
     public Iterable3 iterator3(ScReference first, ScReference second, ScReference third) {
-        var req = new ScRequest<>(
-                99L,
-                ScRequestType.SEARCH_BY_TEMPLATE,
-                PayloadList.of(SearchByTemplatePayloadEntry.of(first, second, third)));
+        var response = scApi.searchByTemplate()
+                .references(first, second, third)
+                .execute();
 
-        var response = scClient.sendRequest(req, ScSearchByTemplateResponse.class);
         throwErrorsIfPresent(response);
 
         return new Iterable3(response.getPayload().getAddrs());

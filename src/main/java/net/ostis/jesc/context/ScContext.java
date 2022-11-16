@@ -1,6 +1,6 @@
-package net.ostis.jesc.api;
+package net.ostis.jesc.context;
 
-import net.ostis.jesc.api.iterator.Iterable3;
+import net.ostis.jesc.context.iterator.Iterable3;
 import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.element.ScType;
 

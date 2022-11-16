@@ -1,4 +1,4 @@
-package net.ostis.jesc.api.exception;
+package net.ostis.jesc.context.exception;
 
 /**
  * The most general runtime exception raised by ScContextCommon.
