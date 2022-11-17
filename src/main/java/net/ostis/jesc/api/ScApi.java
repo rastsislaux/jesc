@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * ScClient wrapper that provides a higher level of abstraction.
+ */
 public class ScApi {
 
     private final ScClient scClient;
@@ -29,22 +32,73 @@ public class ScApi {
         return ++idCounter;
     }
 
+    /**
+     * Example:
+     * <pre>{@code
+     * api.createElements()
+     *     .node(ScType.NODE)
+     *     .edge(ScType.DEDGE_COMMON, ScReference.addr(234L), ScReference.addr(32L))
+     *     .link(ScType.LINK, "Content", ScContentType.STRING)
+     *     .execute();
+     * }</pre>
+     *
+     * @return create elements request builder
+     */
     public CreateElementsBuilder createElements() {
         return new CreateElementsBuilder();
     }
 
+    /**
+     * Example:
+     * <pre>{@code
+     * api.checkElements()
+     *     .scAddr(234L)
+     *     .execute();
+     * }</pre>
+     * @return check elements request builder
+     */
     public CheckElementsBuilder checkElements() {
         return new CheckElementsBuilder();
     }
 
+    /**
+     * Example:
+     * <pre>{@code
+     * api.deleteElements()
+     *     .scAddr(4534L)
+     *     .execute();
+     * }</pre>
+     * @return delete elements request builder
+     */
     public DeleteElementsBuilder deleteElements() {
         return new DeleteElementsBuilder();
     }
 
+    /**
+     * Example:
+     * <pre>{@code
+     * api.keynodes()
+     *     .find("nrel_inclusion")
+     *     .resolve("some_node", ScType.NODE)
+     *     .execute();
+     * }</pre>
+     * @return keynodes request builder
+     */
     public KeynodesBuilder keynodes() {
         return new KeynodesBuilder();
     }
 
+    /**
+     * Example:
+     * <pre>{@code
+     * api.searchByTemplate()
+     *     .references(ScReference.addr(3423L),
+     *                 ScReference.type(ScType.DEDGE_COMMON),
+     *                 ScReference.type(ScType.LINK))
+     *     .execute();
+     * }</pre>
+     * @return search by template request builder
+     */
     public SearchByTemplateBuilder searchByTemplate() {
         return new SearchByTemplateBuilder();
     }
@@ -55,21 +109,44 @@ public class ScApi {
 
         private CreateElementsBuilder() { }
 
+        /**
+         * Create a node
+         * @param nodeType sc type of node
+         * @return create elements request builder
+         */
         public CreateElementsBuilder node(ScType nodeType) {
             this.entries.add(CreateElementsPayloadEntry.node(nodeType));
             return this;
         }
 
+        /**
+         * Create an edge
+         * @param edgeType sc type of edge
+         * @param source reference to source node
+         * @param target reference to target node
+         * @return create elements builder
+         */
         public CreateElementsBuilder edge(ScType edgeType, ScReference source, ScReference target) {
             this.entries.add(CreateElementsPayloadEntry.edge(edgeType, source, target));
             return this;
         }
 
+        /**
+         * Create a link
+         * @param linkType sc type of link
+         * @param content content of any type
+         * @param contentType sc content type
+         * @return create elements builder
+         */
         public CreateElementsBuilder link(ScType linkType, Object content, ScContentType contentType) {
             this.entries.add(CreateElementsPayloadEntry.link(linkType, content, contentType));
             return this;
         }
 
+        /**
+         * Execute create elements request
+         * @return sc response containing list of sc addrs as payload
+         */
         public ScResponseAddrs execute() {
             return scClient.sendRequest(new ScRequest<>(
                     makeId(), ScRequestType.CREATE_ELEMENTS,
@@ -85,6 +162,11 @@ public class ScApi {
 
         private CheckElementsBuilder() { }
 
+        /**
+         * Check by sc address
+         * @param scAddr sc address
+         * @return check elements request builder
+         */
         public CheckElementsBuilder scAddr(Long scAddr) {
             entries.add(CheckElementsPayloadEntry.scAddr(scAddr));
             return this;
