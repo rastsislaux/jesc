@@ -3,10 +3,7 @@ package net.ostis.jesc.client.model.response.payload.entry;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.ArrayList;
 
@@ -15,5 +12,6 @@ import java.util.ArrayList;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@ToString
 public class AddrListPayloadEntry extends ArrayList<Long> implements ScResponsePayloadEntry {
 }

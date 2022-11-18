@@ -1,4 +1,4 @@
-package net.ostis.jesc.client.model.request;
+package net.ostis.jesc.client.model.element;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.RequiredArgsConstructor;

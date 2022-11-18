@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import net.ostis.jesc.client.model.element.ElementType;
+import net.ostis.jesc.client.model.element.ScContentType;
 import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.element.ScType;
-import net.ostis.jesc.client.model.request.ScContentType;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)

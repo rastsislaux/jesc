@@ -2,13 +2,16 @@ package net.ostis.jesc.api;
 
 import net.ostis.jesc.client.ScClient;
 import net.ostis.jesc.client.model.element.ScContentType;
+import net.ostis.jesc.client.model.element.ScEventType;
 import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.element.ScType;
 import net.ostis.jesc.client.model.request.ScRequest;
 import net.ostis.jesc.client.model.request.ScRequestType;
+import net.ostis.jesc.client.model.request.payload.EventsPayload;
 import net.ostis.jesc.client.model.request.payload.ListPayload;
 import net.ostis.jesc.client.model.request.payload.entry.*;
 import net.ostis.jesc.client.model.response.ScResponseAddrs;
+import net.ostis.jesc.client.model.response.ScResponseEventIds;
 import net.ostis.jesc.client.model.response.ScSearchByTemplateResponse;
 
 import java.util.ArrayList;
@@ -51,6 +54,10 @@ public class ScApi {
 
     public ContentBuilder content() {
         return new ContentBuilder();
+    }
+
+    public EventsBuilder events() {
+        return new EventsBuilder();
     }
 
     public class CreateElementsBuilder {
@@ -194,6 +201,36 @@ public class ScApi {
                     makeId(), ScRequestType.KEYNODES,
                     ListPayload.of(entries.toArray(KeynodesPayloadEntry[]::new))
             ), ScResponseAddrs.class);
+        }
+
+    }
+
+    public class EventsBuilder {
+
+        private final List<EventsPayload.Create> createEntries = new ArrayList<>();
+
+        private final List<Long> deleteEntries = new ArrayList<>();
+
+        private EventsBuilder() { }
+
+        public EventsBuilder create(ScEventType type, Long addr) {
+            createEntries.add(EventsPayload.Create.event(type, addr));
+            return this;
+        }
+
+        public EventsBuilder delete(Long eventId) {
+            deleteEntries.add(eventId);
+            return this;
+        }
+
+        public ScResponseEventIds execute() {
+            return scClient.sendRequest(new ScRequest<>(
+                    makeId(), ScRequestType.EVENTS,
+                    new EventsPayload(
+                            createEntries,
+                            deleteEntries
+                    )
+            ), ScResponseEventIds.class);
         }
 
     }

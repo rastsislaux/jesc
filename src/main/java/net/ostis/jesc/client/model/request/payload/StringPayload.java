@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PayloadString implements ScPayload {
+public class StringPayload implements ScPayload {
 
     @JsonValue
     private String value;
