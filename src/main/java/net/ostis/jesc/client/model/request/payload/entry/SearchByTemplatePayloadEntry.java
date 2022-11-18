@@ -1,7 +1,6 @@
 package net.ostis.jesc.client.model.request.payload.entry;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AccessLevel;
@@ -27,14 +26,5 @@ public class SearchByTemplatePayloadEntry extends ArrayList<ScReference> impleme
     public static SearchByTemplatePayloadEntry of(ScReference... scReferences) {
         return new SearchByTemplatePayloadEntry(List.of(scReferences));
     }
-
-    public static ScRequestPayloadEntry scs(String scs) {
-        return new SearchByScsPayloadEntry(scs);
-    }
-
-    @Builder(access = AccessLevel.PRIVATE)
-    @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private record SearchByScsPayloadEntry(@JsonValue String scs) implements ScRequestPayloadEntry { }
 
 }
