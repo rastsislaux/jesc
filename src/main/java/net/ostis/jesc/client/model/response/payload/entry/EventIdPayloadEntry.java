@@ -15,6 +15,6 @@ import lombok.*;
 public class EventIdPayloadEntry implements ScResponsePayloadEntry {
 
     @JsonValue
-    private final Long scAddr;
+    private final Long eventId;
 
 }
