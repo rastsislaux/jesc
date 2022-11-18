@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.ostis.jesc.client.model.request.ScRequest;
+import net.ostis.jesc.client.model.response.ScEvent;
 
 import java.net.URI;
+import java.util.function.Consumer;
 
 /**
  * Communication with SC machine.
@@ -50,6 +52,10 @@ public class ScClient implements AutoCloseable {
         var rawResponse = wsc.getMessage();
         log.debug("Received from SC-machine: {}", rawResponse);
         return objectMapper.readValue(rawResponse, responseType);
+    }
+
+    public void addEventHandler(Consumer<ScEvent> eventHandler) {
+        wsc.eventHandlers.add(eventHandler);
     }
 
     public ScMachineWebSocketClient getWebSocketClient() {
