@@ -1,14 +1,24 @@
 plugins {
-    id 'java'
+    id 'java-library'
     id 'maven-publish'
     id "io.freefair.lombok" version "6.5.1"
 }
+
+apply plugin: 'maven-publish'
 
 group 'net.ostis'
 version '0.3.1'
 
 repositories {
     mavenCentral()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }
 
 dependencies {
