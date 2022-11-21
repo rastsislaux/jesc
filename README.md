@@ -1,3 +1,4 @@
+[![](https://jitpack.io/v/ungaf/jesc.svg)](https://jitpack.io/#ungaf/jesc)
 # Project JESC
 Project JESC (**J**ava **E**nvironment for **SC**-machine) is a Java library
 for interaction with SC-machine using WebSocket API.
