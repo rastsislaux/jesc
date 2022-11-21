@@ -7,7 +7,7 @@ plugins {
 apply plugin: 'maven-publish'
 
 group 'net.ostis'
-version '0.3.1'
+version '0.3.2'
 
 repositories {
     mavenCentral()
