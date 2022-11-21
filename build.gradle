@@ -4,6 +4,8 @@ plugins {
     id "io.freefair.lombok" version "6.5.1"
 }
 
+apply plugin: 'maven-publish'
+
 group 'net.ostis'
 version '0.3.1'
 
