@@ -10,7 +10,7 @@ import lombok.Getter;
 import net.ostis.jesc.client.model.element.ElementType;
 import net.ostis.jesc.client.model.element.ScContentType;
 import net.ostis.jesc.client.model.element.ScReference;
-import net.ostis.jesc.client.model.element.ScType;
+import net.ostis.jesc.client.model.type.ScType;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)

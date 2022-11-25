@@ -2,8 +2,8 @@ package net.ostis.jesc.context;
 
 import net.ostis.jesc.api.ScApi;
 import net.ostis.jesc.client.model.element.ScReference;
-import net.ostis.jesc.client.model.element.ScType;
 import net.ostis.jesc.client.model.response.ScResponse;
+import net.ostis.jesc.client.model.type.ScType;
 import net.ostis.jesc.context.exception.ScContextRuntimeException;
 import net.ostis.jesc.context.iterator.Iterable3;
 

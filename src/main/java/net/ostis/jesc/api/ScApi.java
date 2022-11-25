@@ -4,7 +4,6 @@ import net.ostis.jesc.client.ScClient;
 import net.ostis.jesc.client.model.element.ScContentType;
 import net.ostis.jesc.client.model.element.ScEventType;
 import net.ostis.jesc.client.model.element.ScReference;
-import net.ostis.jesc.client.model.element.ScType;
 import net.ostis.jesc.client.model.request.ScRequest;
 import net.ostis.jesc.client.model.request.ScRequestType;
 import net.ostis.jesc.client.model.request.payload.EventsPayload;
@@ -13,6 +12,7 @@ import net.ostis.jesc.client.model.request.payload.entry.*;
 import net.ostis.jesc.client.model.response.ScResponseAddrs;
 import net.ostis.jesc.client.model.response.ScResponseEventIds;
 import net.ostis.jesc.client.model.response.ScSearchByTemplateResponse;
+import net.ostis.jesc.client.model.type.ScType;
 
 import java.util.ArrayList;
 import java.util.Collection;

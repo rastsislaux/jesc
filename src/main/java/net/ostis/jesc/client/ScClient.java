@@ -50,7 +50,6 @@ public class ScClient implements AutoCloseable {
         log.debug("Sent to SC-machine: {}", rawRequest);
         wsc.send(rawRequest);
         var rawResponse = wsc.getMessage();
-        log.debug("Received from SC-machine: {}", rawResponse);
         return objectMapper.readValue(rawResponse, responseType);
     }
 

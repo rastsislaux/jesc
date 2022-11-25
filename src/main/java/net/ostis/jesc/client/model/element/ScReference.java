@@ -2,6 +2,7 @@ package net.ostis.jesc.client.model.element;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import net.ostis.jesc.client.model.type.ScType;
 
 @Data
 @Builder(access = AccessLevel.PRIVATE)

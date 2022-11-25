@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
-import net.ostis.jesc.client.model.element.ScType;
+import net.ostis.jesc.client.model.type.ScType;
 
 @Getter
 @Builder(access = AccessLevel.PRIVATE)

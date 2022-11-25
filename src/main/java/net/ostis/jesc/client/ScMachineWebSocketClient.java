@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Builder;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import net.ostis.jesc.client.model.response.ScEvent;
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.concurrent.SynchronousQueue;
 import java.util.function.Consumer;
 
+@Slf4j
 public class ScMachineWebSocketClient extends WebSocketClient {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -40,10 +42,14 @@ public class ScMachineWebSocketClient extends WebSocketClient {
     @Override
     @SneakyThrows
     public void onMessage(String message) {
-        if (message.contains("\"events\": true")) {
+        log.debug("Received from SC-machine: {}", message);
+        if (message.contains("\"event\": true")) {
             eventHandlers.forEach(handler -> {
-                        try { handler.accept(objectMapper.readValue(message, ScEvent.class));
-                        } catch (JsonProcessingException e) { throw new RuntimeException(e); }
+                new Thread(() -> {
+                    try {
+                        handler.accept(objectMapper.readValue(message, ScEvent.class));
+                    } catch (JsonProcessingException e) { throw new RuntimeException(e); }
+                }).start();
             });
             return;
         }
