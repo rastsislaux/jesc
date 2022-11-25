@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Slf4j
-class MyTests {
+class TestAgent {
 
     Set<Long> getQuestionGraphs(ScContext context, Long problemNode) {
         var graphs = new HashSet<Long>();
