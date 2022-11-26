@@ -1,23 +1,20 @@
-package net.ostis.jesc.api;
+package net.ostis.jesc.agent;
 
 import lombok.RequiredArgsConstructor;
 import net.ostis.jesc.client.ScClient;
-import net.ostis.jesc.client.model.response.ScEvent;
-
-import java.util.function.Consumer;
 
 @RequiredArgsConstructor
 public class ScAgentRegistry {
 
     private final ScClient scClient;
 
-    public void registerAgent(Long eventId, Consumer<ScEvent> handler) {
+    public void registerAgent(ScAgent agent) {
         scClient.addEventHandler(event -> {
-            if (!event.getId().equals(eventId)) {
+            if (!agent.getTriggerEventIds().contains(event.getId())) {
                 return;
             }
 
-            handler.accept(event);
+            agent.onTrigger(event);
         });
     }
 

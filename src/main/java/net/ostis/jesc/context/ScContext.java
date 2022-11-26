@@ -1,5 +1,6 @@
 package net.ostis.jesc.context;
 
+import net.ostis.jesc.client.model.element.ScEventType;
 import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.type.ScType;
 import net.ostis.jesc.context.iterator.Iterable3;
@@ -58,6 +59,8 @@ public interface ScContext {
      * @return SC address of newly created arc
      */
     Long createArc(ScType type, Long scAddrOut, Long scAddrIn);
+
+    Long createEvent(ScEventType eventType, Long addr);
 
     /**
      * Iterate through triplets.

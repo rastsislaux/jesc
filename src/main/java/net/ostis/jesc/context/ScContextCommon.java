@@ -1,6 +1,7 @@
 package net.ostis.jesc.context;
 
 import net.ostis.jesc.api.ScApi;
+import net.ostis.jesc.client.model.element.ScEventType;
 import net.ostis.jesc.client.model.element.ScReference;
 import net.ostis.jesc.client.model.response.ScResponse;
 import net.ostis.jesc.client.model.type.ScType;
@@ -175,6 +176,23 @@ public class ScContextCommon implements ScContext {
     @Override
     public Long createArc(ScType type, Long scAddrOut, Long scAddrIn) {
         return createEdge(type, scAddrOut, scAddrIn); // That is literally how it's implemented in SC machine
+    }
+
+    /**
+     * Creates an event that listens to changes to a certain sc-element.
+     *
+     * @param eventType type of event to listen to
+     * @param addr address of an element which events are listened
+     * @return event id
+     */
+    @Override
+    public Long createEvent(ScEventType eventType, Long addr) {
+        return scApi.events()
+                .create(eventType, addr)
+                .execute()
+                .getPayload()
+                .get(0)
+                .getEventId();
     }
 
     /**
