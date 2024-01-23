@@ -3,6 +3,7 @@ package ostis.jesc.ctx
 import ostis.jesc.api.ScApi
 import ostis.jesc.client.model.addr.ScAddr
 import ostis.jesc.client.model.event.ScEventType
+import ostis.jesc.client.model.request.payload.entry.ScContentType
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.ctx.etc.ScLinkContent
 import java.io.Closeable
@@ -32,4 +33,5 @@ interface ScCtx: Closeable {
     fun getNoRoleRelationSources(addr: ScAddr, nrelAddr: ScAddr): List<ScAddr>
     fun getNoRoleRelationTarget(addr: ScAddr, nrelAddr: ScAddr): ScAddr
     fun getNoRoleRelationSource(addr: ScAddr, nrelAddr: ScAddr): ScAddr
+    fun createLink(type: ScType, content: Any, contentType: ScContentType): ScAddr
 }

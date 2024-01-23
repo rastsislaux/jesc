@@ -4,6 +4,7 @@ import ostis.jesc.api.ScApi
 import ostis.jesc.client.model.addr.ScAddr
 import ostis.jesc.client.model.event.ScEventType
 import ostis.jesc.client.model.ref.ScRef
+import ostis.jesc.client.model.request.payload.entry.ScContentType
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.ctx.etc.ScLinkContent
 import java.util.*
@@ -28,6 +29,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
 
     override fun createEdge(type: ScType, out: ScAddr, `in`: ScAddr): ScAddr {
         return api.createElements().edge(type, ScRef.addr(out), ScRef.addr(`in`)).execute().payload!![0]
+    }
+
+    override fun createLink(type: ScType, content: Any, contentType: ScContentType): ScAddr {
+        return api.createElements().link(type, content, contentType).execute().payload!![0]
     }
 
     override fun createEvent(addr: ScAddr, eventType: ScEventType): Long {

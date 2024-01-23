@@ -1,10 +1,13 @@
 package ostis.jesc.kpm
 
+import mu.KotlinLogging
 import ostis.jesc.JESC
 import ostis.jesc.client.model.addr.ScAddr
 import ostis.jesc.client.model.event.ScEventType
 import ostis.jesc.ctx.ScCtx
 import java.io.Closeable
+import kotlin.math.log
+import kotlin.reflect.jvm.jvmName
 
 interface ScServer: Closeable {
     fun registerAgent(addr: ScAddr, eventType: ScEventType, factory: ScAgentFactory): Long
@@ -17,6 +20,8 @@ class ScServerImpl(host: String, port: Int): ScServer {
 
     private val agents: MutableMap<Long, ScAgent> = mutableMapOf()
 
+    private var closed = false
+
     init {
         ctx = JESC.makeCtx(host, port)
         ctx.api.client.addEventHandler { event ->
@@ -24,11 +29,15 @@ class ScServerImpl(host: String, port: Int): ScServer {
                 .filter { agent -> agent.key == event.id  }
                 .forEach { it.value.onEvent(event) }
         }
+
+        Runtime.getRuntime().addShutdownHook(Thread { close() })
     }
 
     override fun registerAgent(addr: ScAddr, eventType: ScEventType, factory: ScAgentFactory): Long {
         val eventId = ctx.createEvent(addr, eventType)
-        agents[eventId] = factory.make(ctx)
+        val agent = factory.make(ctx)
+        logger.info { "Registered agent ${agent.name}" }
+        agents[eventId] = agent
         return eventId
     }
 
@@ -38,7 +47,15 @@ class ScServerImpl(host: String, port: Int): ScServer {
     }
 
     override fun close() {
+        if (closed) return
+
+        logger.info { "Closing SC server connection." }
+        closed = true
         ctx.close()
+    }
+
+    companion object {
+        private val logger = KotlinLogging.logger {  }
     }
 
 }
