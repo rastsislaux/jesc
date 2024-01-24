@@ -1,0 +1,13 @@
+site_name: JESC
+#nav:
+#  - What is JESC?: index.md
+#  - API Overview:
+#    - ScCtx: ScCtx.md
+nav:
+  - Getting started:
+      - About JESC: index.md
+  - API Overview:
+    - Context (ScCtx):
+      - Using the context: ScCtx.md
+      - Methods: ScCtxMethods.md
+theme: readthedocs
