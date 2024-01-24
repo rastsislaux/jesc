@@ -85,6 +85,24 @@ JESC.makeServer("localhost", 8090).apply {
 }
 ```
 
+## ScSet
+
+ScSet implements MutableSet<ScAddr> interface, and uses SC Memory internally, so all changes made to ScSet in Java are immediately reflected in SC Memory.
+Example:
+```kotlin
+val element = ctx.findBySystemIdentifier(idtf).get()
+        
+// ScSet implements MutableSet java interface, and using ScMemory as underlying implementation.
+// Recommended way to instantiate an ScSet.
+val set = ctx.structs().set(ScAddr.raw(100))
+        
+// Also you can do:
+val set2 = ScSetImpl(ctx, ScAddr.raw(100))
+
+// All operations from MutableSet interface are available.
+set.add(element)
+set.remove(element)
+```
 
 # Documentation
 
