@@ -1,3 +1,7 @@
+[![Documentation Status](https://readthedocs.org/projects/jesc/badge/?version=latest)](https://jesc.readthedocs.io/en/latest/?badge=latest)
+
+<img src="docs/md/assets/logo.svg" alt="Description" align="left" width="200" style="margin: 20px" />
+
 # Project JESC
 
 JESC is a Kotlin library that provides a convenient and easy-to-use 
