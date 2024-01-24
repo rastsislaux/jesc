@@ -1,8 +1,14 @@
 site_name: JESC
-#nav:
-#  - What is JESC?: index.md
-#  - API Overview:
-#    - ScCtx: ScCtx.md
+site_author: Rastsislau Lipski
+site_description: >-
+  JESC is a Kotlin library that provides a convenient and easy-to-use
+  interface for working with the SC machine.
+
+docs_dir: md
+
+repo_name: rastsislaux/jesc
+repo_url: https://github.com/rastsislaux/jesc
+
 nav:
   - Getting started:
       - About JESC: index.md
@@ -10,4 +16,95 @@ nav:
     - Context (ScCtx):
       - Using the context: ScCtx.md
       - Methods: ScCtxMethods.md
-theme: readthedocs
+      - Structures: ScCtxStructures.md
+    - Knowledge Processing Machine:
+        - ScServer: ScServer.md
+        - ScAgent: ScAgent.md
+    - API (ScApi):
+        - Using the API: ScApi.md
+        - Methods: ScApiMethods.md
+    - Client (ScClient):
+        - Using the client: ScClient.md
+        - Methods: ScClientMethods.md
+  - Contribution:
+      - Contribution guidelines: Contribution.md
+      - What can you do?: Todo.md
+
+theme:
+  name: material
+  logo: assets/logo_circle.svg
+  favicon: assets/logo.svg
+  features:
+    - announce.dismiss
+    - content.action.edit
+    - content.action.view
+    - content.code.annotate
+    - content.code.copy
+    - content.code.select
+    # - content.footnote.tooltips
+    # - content.tabs.link
+    - content.tooltips
+    # - header.autohide
+    # - navigation.expand
+    - navigation.path
+    - navigation.footer
+    - navigation.indexes
+    - navigation.instant
+    # - navigation.instant.prefetch
+    - navigation.instant.progress
+    # - navigation.prune
+    - navigation.sections
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+    - toc.follow
+    #- toc.integrate
+  palette:
+    primary: custom
+    accent: custom
+  font:
+    text: Roboto
+    code: Roboto Mono
+    favicon: assets/favicon.ico
+
+extra_css:
+  - stylesheets/extra.css
+
+plugins:
+  - search:
+      separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+
+extra:
+  status:
+    new: Recently added
+    deprecated: Deprecated
+  analytics:
+    provider: google
+    property: !ENV GOOGLE_ANALYTICS_KEY
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/rastislaux
+    #- icon: fontawesome/brands/docker
+    #  link: https://hub.docker.com/r/rastislau
+    #- icon: fontawesome/brands/python
+    #  link: https://pypi.org/project/mkdocs-material/
+    #- icon: fontawesome/brands/mastodon
+    #  link: https://fosstodon.org/@squidfunk
+    #- icon: fontawesome/brands/twitter
+    #  link: https://twitter.com/squidfunk
+
+markdown_extensions:
+  - def_list
+  - admonition
+  - toc
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
