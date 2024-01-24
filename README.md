@@ -60,17 +60,13 @@ ctx.api.searchByTemplate()
 
 If you're building a full-fledged system you may be interested
 in knowledge-processing capabilities of JESC. The library provides an API
-to process knowledge in agent-oriented manner:
+to process knowledge in agent-oriented manner.
 
-```kotlin
-val server = JESC.makeServer("localhost", 8090)
-```
-
-Now, we'll need to create some kind of agent and a factory for that agent:
+We'll need to create some kind of agent and a factory for that agent:
 ```kotlin
 class MyAgent(ctx: ScCtx): ScAgent(ctx) {
     
-    override fun onEvent(event: ScEvent) {
+    override fun onEvent(listenAddr: ScAddr, edgeAddr: ScAddr, otherAddr: ScAddr) {
         // ctx is available inside agents
         ctx.api.createElements()
             .link(ScType.LINK_CONST, "Some content", ScContentType.STRING)
@@ -79,16 +75,14 @@ class MyAgent(ctx: ScCtx): ScAgent(ctx) {
     }
 
 }
-
-class MyAgentFactory: ScAgentFactory {
-    override fun make(ctx: ScApi) = MyAgent(ctx)
-}
 ```
 
 Now we can register out factory within the server:
 
 ```kotlin
-server.registerAgent("some_node", ScEventType.ADD_OUTGOING_EDGE, MyAgentFactory())
+JESC.makeServer("localhost", 8090).apply {
+    registerAgent ("some_node", ScEventType.ADD_OUTGOING_EDGE) { MyAgent(it) }
+}
 ```
 
 
