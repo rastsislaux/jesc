@@ -7,6 +7,8 @@ import ostis.jesc.client.model.ref.ScRef
 import ostis.jesc.client.model.request.payload.entry.ScContentType
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.ctx.etc.ScLinkContent
+import ostis.jesc.ctx.set.ScSet
+import ostis.jesc.ctx.set.ScSetImpl
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
@@ -35,12 +37,18 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         return api.createElements().link(type, content, contentType).execute().payload!![0]
     }
 
+    override fun structs() = object : ScCtx.Structs {
+        override fun set(): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = createNode(ScType.NODE_CONST_STRUCT))
+        override fun set(type: ScType): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = createNode(type))
+        override fun set(addr: ScAddr): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = addr)
+    }
+
     override fun createEvent(addr: ScAddr, eventType: ScEventType): Long {
         return api.events().create(addr, eventType).execute().payload!![0]
     }
 
     override fun getLinkContent(addr: ScAddr): ScLinkContent {
-        val value = api.content().get(addr).execute().payload!![0][0]["value"]
+        val value = api.content().get(addr).execute().payload!![0]["value"]
         return ScLinkContent(value)
     }
 
@@ -68,8 +76,8 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         val linkAddr = api.searchByTemplate()
             .triplet(
                 ScRef.addr(addr),
-                ScRef.type(ScType.EDGE_D_COMMON_VAR),
-                ScRef.type(ScType.LINK, "content")
+                ScRef.type(ScType.EDGE_D_COMMON_VAR, "edge"),
+                ScRef.type(ScType.LINK_VAR, "content")
             )
             .triplet(
                 ScRef.addr(nrelMainIdtf),

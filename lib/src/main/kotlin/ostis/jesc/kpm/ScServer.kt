@@ -27,7 +27,7 @@ class ScServerImpl(host: String, port: Int): ScServer {
         ctx.api.client.addEventHandler { event ->
             agents
                 .filter { agent -> agent.key == event.id  }
-                .forEach { it.value.onEvent(event) }
+                .forEach { it.value.onEvent(event.payload[0], event.payload[1], event.payload[2]) }
         }
 
         Runtime.getRuntime().addShutdownHook(Thread { close() })
