@@ -8,10 +8,10 @@
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.9.10"
+    id("maven-publish")
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
-    `maven-publish`
 }
 
 repositories {
@@ -46,4 +46,18 @@ java {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+val sourcesJar by tasks.registering(Jar::class) {
+    archiveClassifier = "sources"
+    from(sourceSets.main.get().allSource)
+}
+
+publishing {
+    publications {
+        register("mavenJava", MavenPublication::class) {
+            from(components["java"])
+            artifact(sourcesJar.get())
+        }
+    }
 }
