@@ -55,4 +55,8 @@ enum class ScType(
     NODE_VAR_CLASS(RawScType.SC_TYPE_NODE or RawScType.SC_TYPE_VAR or RawScType.SC_TYPE_NODE_CLASS),
     NODE_VAR_ABSTRACT(RawScType.SC_TYPE_NODE or RawScType.SC_TYPE_VAR or RawScType.SC_TYPE_NODE_ABSTRACT),
     NODE_VAR_MATERIAL(RawScType.SC_TYPE_NODE or RawScType.SC_TYPE_VAR or RawScType.SC_TYPE_NODE_MATERIAL);
+
+    val isNode = (this.raw and ScTypeBitmasks.SC_TYPE_NODE)      != 0
+    val isEdge = (this.raw and ScTypeBitmasks.SC_TYPE_EDGE_MASK) != 0
+    val isLink = (this.raw and ScTypeBitmasks.SC_TYPE_LINK)      != 0
 }
