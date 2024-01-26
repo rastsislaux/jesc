@@ -3,7 +3,7 @@ package ostis.jesc.memory
 import ostis.jesc.client.model.addr.ScAddr
 import ostis.jesc.client.model.request.payload.entry.ScContentType
 import ostis.jesc.ctx.ScCtx
-import ostis.jesc.memory.element.*
+import ostis.jesc.memory.element.ScElement
 import ostis.jesc.memory.element.edge.ScEdge
 import ostis.jesc.memory.element.edge.ScEdgeImpl
 import ostis.jesc.memory.element.edge.ScEdgeType
@@ -76,17 +76,21 @@ class ScMemoryImpl(override val ctx: ScCtx): ScMemory {
 
         override fun node(type: ScNodeType) =
             ScNodeImpl(this@ScMemoryImpl, this@ScMemoryImpl.ctx.createNode(type.type))
+
         override fun edge(type: ScEdgeType, source: ScElement, target: ScElement) =
             ScEdgeImpl(this@ScMemoryImpl, this@ScMemoryImpl.ctx.createEdge(
                 type.type, source.addr, target.addr
             ))
+
         override fun link(type: ScLinkType, content: String, contentType: ScContentType) =
             ScLinkImpl(this@ScMemoryImpl, this@ScMemoryImpl.ctx.createLink(
                 type.type, content, contentType
             ))
+
     }
 
     override fun get() = object: ScMemory.Getters {
+
         override fun node(addr: ScAddr) = ScNodeImpl(this@ScMemoryImpl, addr)
         override fun node(sysIdtf: String) = node(this@ScMemoryImpl.ctx.findBySystemIdentifier(sysIdtf).get())
 

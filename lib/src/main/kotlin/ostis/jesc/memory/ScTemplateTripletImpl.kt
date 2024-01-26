@@ -7,64 +7,82 @@ import ostis.jesc.client.model.type.ScType
 import ostis.jesc.memory.element.ScElement
 import ostis.jesc.memory.element.ScSpecificType
 import java.util.stream.Stream
+import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
 interface ScTemplateTriplet {
     fun apply(searchByTemplateBuilder: SearchByTemplateBuilder)
 }
 
-data class ScTemplateTripletImpl(
-    val arg1: Any,
-    val arg2: Any,
-    val arg3: Any,
+class ScTemplateTripletImpl(
+    arg1: Any,
+    arg2: Any,
+    arg3: Any,
 ): ScTemplateTriplet {
 
+    private val refs: List<ScRef>
+
     init {
-        Stream.of(arg1, arg2, arg3).forEach { arg ->
-            val isAllowed = allowedTypes.any { type -> arg::class.isSubclassOf(type) }
-            if (!isAllowed) {
-                throw IllegalArgumentException("${arg::class.qualifiedName} is not allowed as ScTemplateTriplet argument")
-            }
+        refs = listOf(arg1, arg2, arg3).map { arg ->
+            val converter = converters.firstOrNull { arg::class.isSubclassOf(it.sourceClass) }
+                ?: throw IllegalArgumentException("${arg::class.qualifiedName} is not allowed as ScTemplateTriplet argument")
+            return@map converter.convert(arg)
         }
     }
 
-    private fun convertToScRef(arg: Any) = when (arg) {
-        is ScType -> ScRef.type(arg)
-        is ScSpecificType -> ScRef.type(arg.type)
-        is ScAddr -> ScRef.addr(arg)
-        is ScElement -> ScRef.addr(arg.addr)
-        is String -> ScRef.alias(arg)
-        is Long -> ScRef.ref(arg)
-        is Int -> ScRef.ref(arg.toLong())
-        is ScRef -> arg
-        else -> throw IllegalStateException("This should never happen: illegal arg type passed to ScTemplateTriplet")
+    override fun apply(searchByTemplateBuilder: SearchByTemplateBuilder) {
+        searchByTemplateBuilder.triplet(refs[0], refs[1], refs[2])
     }
 
-    override fun apply(searchByTemplateBuilder: SearchByTemplateBuilder) {
-        val refs = listOf(arg1, arg2, arg3).map { convertToScRef(it) }
-        searchByTemplateBuilder.triplet(refs[0], refs[1], refs[2])
+    interface Converter {
+        val sourceClass: KClass<*>
+        fun convert(arg: Any): ScRef
     }
 
     companion object {
 
-        val allowedTypes = setOf(
-            // Types
-            ScType::class,
-            ScSpecificType::class,
+        val converters = setOf(
 
-            // Concrete elements
-            ScAddr::class,
-            ScElement::class,
+            object: Converter {
+                override val sourceClass = ScType::class
+                override fun convert(arg: Any) = ScRef.type(arg as ScType)
+            },
 
-            // Alias
-            String::class,
+            object: Converter {
+                override val sourceClass = ScSpecificType::class
+                override fun convert(arg: Any) = ScRef.type((arg as ScSpecificType).type)
+            },
 
-            // Ref
-            Long::class,
-            Int::class,
+            object: Converter {
+                override val sourceClass = ScAddr::class
+                override fun convert(arg: Any) = ScRef.addr(arg as ScAddr)
+            },
 
-            // ScRef
-            ScRef::class,
+            object: Converter {
+                override val sourceClass = ScElement::class
+                override fun convert(arg: Any) = ScRef.addr((arg as ScElement).addr)
+            },
+
+            object: Converter {
+                override val sourceClass = String::class
+                override fun convert(arg: Any) = ScRef.alias(arg as String)
+            },
+
+            object: Converter {
+                override val sourceClass = Long::class
+                override fun convert(arg: Any) = ScRef.ref(arg as Long)
+            },
+
+            object: Converter {
+                override val sourceClass = Int::class
+                override fun convert(arg: Any) = ScRef.ref((arg as Int).toLong())
+            },
+
+            object: Converter {
+                override val sourceClass = ScRef::class
+                override fun convert(arg: Any) = arg as ScRef
+            }
+
         )
 
     }
