@@ -21,6 +21,17 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         return Optional.ofNullable(api.keynodes().find(idtf).execute().payload?.get(0))
     }
 
+    override fun getType(addr: ScAddr): ScType {
+        return api.checkElements()
+            .addr(addr)
+            .execute()
+            .payload!![0]
+    }
+
+    override fun delete(addr: ScAddr) {
+        api.deleteElements().addr(addr).execute()
+    }
+
     override fun resolveBySystemIdentifier(idtf: String, type: ScType): ScAddr {
         return api.keynodes().resolve(idtf, type).execute().payload!![0]
     }
@@ -47,12 +58,17 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         return api.events().create(addr, eventType).execute().payload!![0]
     }
 
-    override fun getLinkContent(addr: ScAddr): ScLinkContent {
-        val value = api.content().get(addr).execute().payload!![0]["value"]
-        return ScLinkContent(value)
+    override fun getLinkContent(addr: ScAddr): ScLinkContent? {
+        val value = api.content().get(addr).execute().payload!!
+
+        if (value.size > 0) {
+            return ScLinkContent(value[0]["value"])
+        }
+
+        return null
     }
 
-    override fun getSystemIdentifier(addr: ScAddr): String {
+    override fun getSystemIdentifier(addr: ScAddr): String? {
         val linkAddr = api.searchByTemplate()
             .triplet(
                 ScRef.addr(addr),
@@ -67,7 +83,7 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
             .execute()
             .payload!!.addrs[0][2]
 
-        return getLinkContent(linkAddr).string()
+        return getLinkContent(linkAddr)?.string()
     }
 
     override fun getMainIdentifier(addr: ScAddr, lang: String): String? {
@@ -91,7 +107,7 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
             )
             .execute().payload!!.addrs.getOrNull(0)?.getOrNull(2)
 
-        return linkAddr?.let { getLinkContent(it).string() }
+        return linkAddr?.let { getLinkContent(it)!!.string() }
     }
 
     override fun getRelationTargets(addr: ScAddr, relAddr: ScAddr, relType: ScType): List<ScAddr> {

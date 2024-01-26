@@ -9,12 +9,15 @@ import ostis.jesc.ctx.ScCtx
 import ostis.jesc.ctx.ScCtxImpl
 import ostis.jesc.kpm.ScServer
 import ostis.jesc.kpm.ScServerImpl
+import ostis.jesc.memory.ScMemory
+import ostis.jesc.memory.ScMemoryImpl
 import java.net.URI
 
 interface JESCBuilder {
     fun makeClient(host: String, port: Int): ScClient
     fun makeApi(host: String, port: Int): ScApi
     fun makeCtx(host: String, port: Int): ScCtx
+    fun makeMemory(host: String, port: Int): ScMemory
     fun makeServer(host: String, port: Int): ScServer
 }
 
@@ -30,6 +33,8 @@ object JESC: JESCBuilder {
 
     override fun makeCtx(host: String, port: Int): ScCtx = ScCtxImpl(makeApi(host, port))
 
-    override fun makeServer(host: String, port: Int): ScServer = ScServerImpl(host, port)
+    override fun makeMemory(host: String, port: Int): ScMemory = ScMemoryImpl(makeCtx(host, port))
+
+    override fun makeServer(host: String, port: Int): ScServer = ScServerImpl(makeMemory(host, port))
 
 }

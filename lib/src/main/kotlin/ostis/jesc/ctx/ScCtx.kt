@@ -19,8 +19,8 @@ interface ScCtx: Closeable {
     fun createNode(type: ScType): ScAddr
     fun createEdge(type: ScType, out: ScAddr, `in`: ScAddr): ScAddr
     fun createEvent(addr: ScAddr, eventType: ScEventType): Long
-    fun getLinkContent(addr: ScAddr): ScLinkContent
-    fun getSystemIdentifier(addr: ScAddr): String
+    fun getLinkContent(addr: ScAddr): ScLinkContent?
+    fun getSystemIdentifier(addr: ScAddr): String?
     fun getMainIdentifier(addr: ScAddr, lang: String): String?
     fun getRelationTargets(addr: ScAddr, relAddr: ScAddr, relType: ScType): List<ScAddr>
     fun getRelationSources(addr: ScAddr, relAddr: ScAddr, relType: ScType): List<ScAddr>
@@ -35,6 +35,8 @@ interface ScCtx: Closeable {
     fun getNoRoleRelationTarget(addr: ScAddr, nrelAddr: ScAddr): ScAddr
     fun getNoRoleRelationSource(addr: ScAddr, nrelAddr: ScAddr): ScAddr
     fun createLink(type: ScType, content: Any, contentType: ScContentType): ScAddr
+    fun getType(addr: ScAddr): ScType
+    fun delete(addr: ScAddr)
 
     fun structs(): Structs
 

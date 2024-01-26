@@ -1,14 +1,14 @@
 package ostis.jesc.kpm
 
-import ostis.jesc.client.model.addr.ScAddr
-import ostis.jesc.client.model.event.ScEvent
-import ostis.jesc.ctx.ScCtx
+import ostis.jesc.memory.element.edge.ScEdge
+import ostis.jesc.memory.element.ScElement
+import ostis.jesc.memory.ScMemory
 
 fun interface ScAgentFactory {
-    fun make(ctx: ScCtx): ScAgent
+    fun make(ctx: ScMemory): ScAgent
 }
 
-abstract class ScAgent(protected val ctx: ScCtx) {
+abstract class ScAgent(protected val memory: ScMemory) {
     open val name = this::class.qualifiedName
-    abstract fun onEvent(listenAddr: ScAddr, edgeAddr: ScAddr, otherAddr: ScAddr): ScResult
+    abstract fun onEvent(listenElement: ScElement, edge: ScEdge, otherElement: ScElement): ScResult
 }
