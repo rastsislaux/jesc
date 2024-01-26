@@ -4,6 +4,7 @@ import ostis.jesc.client.model.addr.ScAddr
 import ostis.jesc.client.model.request.payload.entry.ScContentType
 import ostis.jesc.ctx.ScCtx
 import ostis.jesc.memory.element.ScElement
+import ostis.jesc.memory.element.*
 import ostis.jesc.memory.element.edge.ScEdge
 import ostis.jesc.memory.element.edge.ScEdgeImpl
 import ostis.jesc.memory.element.edge.ScEdgeType

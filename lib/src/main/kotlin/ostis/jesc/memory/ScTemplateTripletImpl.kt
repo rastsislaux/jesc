@@ -6,7 +6,6 @@ import ostis.jesc.client.model.ref.ScRef
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.memory.element.ScElement
 import ostis.jesc.memory.element.ScSpecificType
-import java.util.stream.Stream
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 
