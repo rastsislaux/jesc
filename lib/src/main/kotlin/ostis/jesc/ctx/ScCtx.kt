@@ -6,7 +6,7 @@ import ostis.jesc.client.model.event.ScEventType
 import ostis.jesc.client.model.request.payload.entry.ScContentType
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.ctx.etc.ScLinkContent
-import ostis.jesc.ctx.set.ScSet
+import ostis.jesc.ctx.set.ScAddrSet
 import java.io.Closeable
 import java.util.*
 
@@ -20,6 +20,7 @@ interface ScCtx: Closeable {
     fun createEdge(type: ScType, out: ScAddr, `in`: ScAddr): ScAddr
     fun createEvent(addr: ScAddr, eventType: ScEventType): Long
     fun getLinkContent(addr: ScAddr): ScLinkContent?
+    fun setLinkContent(addr: ScAddr, content: Any, contentType: ScContentType)
     fun getSystemIdentifier(addr: ScAddr): String?
     fun getMainIdentifier(addr: ScAddr, lang: String): String?
     fun getRelationTargets(addr: ScAddr, relAddr: ScAddr, relType: ScType): List<ScAddr>
@@ -41,8 +42,8 @@ interface ScCtx: Closeable {
     fun structs(): Structs
 
     interface Structs {
-        fun set(): ScSet
-        fun set(type: ScType): ScSet
-        fun set(addr: ScAddr): ScSet
+        fun set(): ScAddrSet
+        fun set(type: ScType): ScAddrSet
+        fun set(addr: ScAddr): ScAddrSet
     }
 }

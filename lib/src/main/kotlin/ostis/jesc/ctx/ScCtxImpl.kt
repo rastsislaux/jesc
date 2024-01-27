@@ -7,8 +7,8 @@ import ostis.jesc.client.model.ref.ScRef
 import ostis.jesc.client.model.request.payload.entry.ScContentType
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.ctx.etc.ScLinkContent
-import ostis.jesc.ctx.set.ScSet
-import ostis.jesc.ctx.set.ScSetImpl
+import ostis.jesc.ctx.set.ScAddrSet
+import ostis.jesc.ctx.set.ScAddrSetImpl
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
@@ -49,9 +49,9 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
     }
 
     override fun structs() = object : ScCtx.Structs {
-        override fun set(): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = createNode(ScType.NODE_CONST_STRUCT))
-        override fun set(type: ScType): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = createNode(type))
-        override fun set(addr: ScAddr): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = addr)
+        override fun set(): ScAddrSet = ScAddrSetImpl(ctx = this@ScCtxImpl, addr = createNode(ScType.NODE_CONST_STRUCT))
+        override fun set(type: ScType): ScAddrSet = ScAddrSetImpl(ctx = this@ScCtxImpl, addr = createNode(type))
+        override fun set(addr: ScAddr): ScAddrSet = ScAddrSetImpl(ctx = this@ScCtxImpl, addr = addr)
     }
 
     override fun createEvent(addr: ScAddr, eventType: ScEventType): Long {
@@ -110,6 +110,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         return linkAddr?.let { getLinkContent(it)!!.string() }
     }
 
+    override fun setLinkContent(addr: ScAddr, content: Any, contentType: ScContentType) {
+        api.content().set(addr, content, contentType).execute()
+    }
+
     override fun getRelationTargets(addr: ScAddr, relAddr: ScAddr, relType: ScType): List<ScAddr> {
         return api.searchByTemplate()
             .triplet(
@@ -118,7 +122,7 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
                 ScRef.type(ScType.VAR)
             )
             .triplet(
-                ScRef.addr(addr),
+                ScRef.addr(relAddr),
                 ScRef.type(ScType.EDGE_ACCESS_VAR_POS_PERM),
                 ScRef.alias("edge")
             )

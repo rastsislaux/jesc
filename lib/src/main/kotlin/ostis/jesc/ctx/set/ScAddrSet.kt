@@ -5,11 +5,11 @@ import ostis.jesc.client.model.ref.ScRef
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.ctx.ScCtx
 
-interface ScSet: MutableSet<ScAddr> {
+interface ScAddrSet: MutableSet<ScAddr> {
     val addr: ScAddr
 }
 
-class ScSetImpl(val ctx: ScCtx, override val addr: ScAddr): ScSet {
+class ScAddrSetImpl(val ctx: ScCtx, override val addr: ScAddr): ScAddrSet {
 
     override val size: Int
         get() = ctx.api.searchByTemplate()
@@ -56,7 +56,7 @@ class ScSetImpl(val ctx: ScCtx, override val addr: ScAddr): ScSet {
     override fun iterator(): MutableIterator<ScAddr> {
         return object : MutableIterator<ScAddr> {
             private val addrs = ctx.api.searchByTemplate()
-                .triplet(ScRef.addr(this@ScSetImpl.addr), ScRef.type(ScType.EDGE_ACCESS_VAR_POS_PERM), ScRef.type(ScType.VAR))
+                .triplet(ScRef.addr(this@ScAddrSetImpl.addr), ScRef.type(ScType.EDGE_ACCESS_VAR_POS_PERM), ScRef.type(ScType.VAR))
                 .execute().payload!!.addrs.map { it[2] }
 
             private var idx = -1
@@ -70,7 +70,7 @@ class ScSetImpl(val ctx: ScCtx, override val addr: ScAddr): ScSet {
             }
 
             override fun remove() {
-                this@ScSetImpl.remove(addrs[idx])
+                this@ScAddrSetImpl.remove(addrs[idx])
             }
         }
     }

@@ -32,7 +32,9 @@ interface ScMemory: Closeable {
     interface Constructors {
         fun node(type: ScNodeType): ScNode
         fun edge(type: ScEdgeType, source: ScElement, target: ScElement): ScEdge
-        fun link(type: ScLinkType, content: String, contentType: ScContentType): ScLink
+        fun link(type: ScLinkType, content: String): ScLink
+        fun link(type: ScLinkType, content: Int): ScLink
+        fun link(type: ScLinkType, content: Double): ScLink
     }
 
     interface Getters {
@@ -83,10 +85,23 @@ class ScMemoryImpl(override val ctx: ScCtx): ScMemory {
                 type.type, source.addr, target.addr
             ))
 
-        override fun link(type: ScLinkType, content: String, contentType: ScContentType) =
-            ScLinkImpl(this@ScMemoryImpl, this@ScMemoryImpl.ctx.createLink(
-                type.type, content, contentType
+        override fun link(type: ScLinkType, content: String): ScLink {
+            return ScLinkImpl(this@ScMemoryImpl, this@ScMemoryImpl.ctx.createLink(
+                type.type, content, ScContentType.STRING
             ))
+        }
+
+        override fun link(type: ScLinkType, content: Int): ScLink {
+            return ScLinkImpl(this@ScMemoryImpl, this@ScMemoryImpl.ctx.createLink(
+                type.type, content, ScContentType.INT
+            ))
+        }
+
+        override fun link(type: ScLinkType, content: Double): ScLink {
+            return ScLinkImpl(this@ScMemoryImpl, this@ScMemoryImpl.ctx.createLink(
+                type.type, content, ScContentType.FLOAT
+            ))
+        }
 
     }
 
