@@ -1,0 +1,7 @@
+#! /bin/sh
+
+echo "JESC > Prepare for development:"
+
+# Use hooks defined in the repository
+echo "       - Set hooks path to .githooks/"
+git config --local core.hooksPath .githooks/
