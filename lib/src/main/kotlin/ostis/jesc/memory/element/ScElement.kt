@@ -27,11 +27,11 @@ interface ScElement {
         }
 
         interface Find {
-            fun target(edgeType: ScEdgeType)
-            fun targets(edgeType: ScEdgeType)
+            fun target(edgeType: ScEdgeType): ScElement?
+            fun targets(edgeType: ScEdgeType): List<ScElement>
 
-            fun source(edgeType: ScEdgeType)
-            fun sources(edgeType: ScEdgeType)
+            fun source(edgeType: ScEdgeType): ScElement?
+            fun sources(edgeType: ScEdgeType): List<ScElement>
         }
 
     }
@@ -47,8 +47,8 @@ interface ScElement {
             fun nrel(): Specific
 
             interface Specific {
-                fun to(target: ScElement, rel: ScNode)
-                fun from(target: ScElement, rel: ScNode)
+                fun to(target: ScElement, rel: ScNode): ScEdge
+                fun from(target: ScElement, rel: ScNode): ScEdge
             }
 
         }
@@ -59,9 +59,10 @@ interface ScElement {
             fun nrel(): Specific
 
             interface Specific {
-                fun target(rel: ScNode): ScElement
+                fun target(rel: ScNode): ScElement?
                 fun targets(rel: ScNode): List<ScElement>
-                fun source(rel: ScNode): ScElement
+    
+                fun source(rel: ScNode): ScElement?
                 fun sources(rel: ScNode): List<ScElement>
             }
 

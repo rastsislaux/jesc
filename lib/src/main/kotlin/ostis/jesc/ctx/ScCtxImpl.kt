@@ -147,10 +147,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
     }
 
     override fun getRelationTarget(addr: ScAddr, relAddr: ScAddr, relType: ScType) =
-        getRelationTargets(addr, relAddr, relType)[0]
+        getRelationTargets(addr, relAddr, relType).getOrNull(0)
 
     override fun getRelationSource(addr: ScAddr, relAddr: ScAddr, relType: ScType) =
-        getRelationSources(addr, relAddr, relType)[0]
+        getRelationSources(addr, relAddr, relType).getOrNull(0)
 
     override fun getRoleRelationTargets(addr: ScAddr, rrelAddr: ScAddr) =
         getRelationTargets(addr, rrelAddr, ScType.EDGE_ACCESS_VAR_POS_PERM)
@@ -159,10 +159,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         getRelationSources(addr, rrelAddr, ScType.EDGE_ACCESS_VAR_POS_PERM)
 
     override fun getRoleRelationTarget(addr: ScAddr, rrelAddr: ScAddr) =
-        getRoleRelationTargets(addr, rrelAddr)[0]
+        getRoleRelationTargets(addr, rrelAddr).getOrNull(0)
 
     override fun getRoleRelationSource(addr: ScAddr, rrelAddr: ScAddr) =
-        getRoleRelationSources(addr, rrelAddr)[0]
+        getRoleRelationSources(addr, rrelAddr).getOrNull(0)
 
     override fun getNoRoleRelationTargets(addr: ScAddr, nrelAddr: ScAddr) =
         getRelationTargets(addr, nrelAddr, ScType.EDGE_D_COMMON_VAR)
@@ -171,10 +171,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         getRelationSources(addr, nrelAddr, ScType.EDGE_D_COMMON_VAR)
 
     override fun getNoRoleRelationTarget(addr: ScAddr, nrelAddr: ScAddr) =
-        getNoRoleRelationTargets(addr, nrelAddr)[0]
+        getNoRoleRelationTargets(addr, nrelAddr).getOrNull(0)
 
     override fun getNoRoleRelationSource(addr: ScAddr, nrelAddr: ScAddr) =
-        getNoRoleRelationSources(addr, nrelAddr)[0]
+        getNoRoleRelationSources(addr, nrelAddr).getOrNull(0)
 
     override fun getElements(set: ScAddr): List<ScAddr> = api.searchByTemplate()
         .triplet(

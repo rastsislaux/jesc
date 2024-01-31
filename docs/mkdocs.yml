@@ -26,6 +26,7 @@ nav:
     - Client (ScClient):
         - Using the client: ScClient.md
         - Methods: ScClientMethods.md
+  - KDoc: lib
   - Contribution:
       - Contribution guidelines: Contribution.md
       - What can you do?: Todo.md
@@ -75,6 +76,7 @@ extra_css:
   - stylesheets/extra.css
 
 plugins:
+  - include_dir_to_nav
   - search:
       separator: '[\s\u200b\-_,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
 

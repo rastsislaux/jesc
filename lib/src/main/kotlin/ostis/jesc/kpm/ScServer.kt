@@ -3,7 +3,7 @@ package ostis.jesc.kpm
 import mu.KotlinLogging
 import ostis.jesc.client.model.addr.ScAddr
 import ostis.jesc.client.model.event.ScEventType
-import ostis.jesc.kpm.agent.FinalizedScAgent
+import ostis.jesc.kpm.agent.ScAgent
 import ostis.jesc.kpm.agent.ScAgentFactory
 import ostis.jesc.memory.ScMemory
 import java.io.Closeable
@@ -15,7 +15,7 @@ interface ScServer: Closeable {
 
 class ScServerImpl(private val memory: ScMemory): ScServer {
 
-    private val agents: MutableMap<Long, FinalizedScAgent> = mutableMapOf()
+    private val agents: MutableMap<Long, ScAgent> = mutableMapOf()
 
     private var closed = false
 

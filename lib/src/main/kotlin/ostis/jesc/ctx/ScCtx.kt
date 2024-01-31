@@ -25,16 +25,16 @@ interface ScCtx: Closeable {
     fun getMainIdentifier(addr: ScAddr, lang: String): String?
     fun getRelationTargets(addr: ScAddr, relAddr: ScAddr, relType: ScType): List<ScAddr>
     fun getRelationSources(addr: ScAddr, relAddr: ScAddr, relType: ScType): List<ScAddr>
-    fun getRelationTarget(addr: ScAddr, relAddr: ScAddr, relType: ScType): ScAddr
-    fun getRelationSource(addr: ScAddr, relAddr: ScAddr, relType: ScType): ScAddr
+    fun getRelationTarget(addr: ScAddr, relAddr: ScAddr, relType: ScType): ScAddr?
+    fun getRelationSource(addr: ScAddr, relAddr: ScAddr, relType: ScType): ScAddr?
     fun getRoleRelationTargets(addr: ScAddr, rrelAddr: ScAddr): List<ScAddr>
     fun getRoleRelationSources(addr: ScAddr, rrelAddr: ScAddr): List<ScAddr>
-    fun getRoleRelationTarget(addr: ScAddr, rrelAddr: ScAddr): ScAddr
-    fun getRoleRelationSource(addr: ScAddr, rrelAddr: ScAddr): ScAddr
+    fun getRoleRelationTarget(addr: ScAddr, rrelAddr: ScAddr): ScAddr?
+    fun getRoleRelationSource(addr: ScAddr, rrelAddr: ScAddr): ScAddr?
     fun getNoRoleRelationTargets(addr: ScAddr, nrelAddr: ScAddr): List<ScAddr>
     fun getNoRoleRelationSources(addr: ScAddr, nrelAddr: ScAddr): List<ScAddr>
-    fun getNoRoleRelationTarget(addr: ScAddr, nrelAddr: ScAddr): ScAddr
-    fun getNoRoleRelationSource(addr: ScAddr, nrelAddr: ScAddr): ScAddr
+    fun getNoRoleRelationTarget(addr: ScAddr, nrelAddr: ScAddr): ScAddr?
+    fun getNoRoleRelationSource(addr: ScAddr, nrelAddr: ScAddr): ScAddr?
     fun createLink(type: ScType, content: Any, contentType: ScContentType): ScAddr
     fun getType(addr: ScAddr): ScType
     fun delete(addr: ScAddr)
