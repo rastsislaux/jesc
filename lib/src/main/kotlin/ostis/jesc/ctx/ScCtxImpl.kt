@@ -7,8 +7,8 @@ import ostis.jesc.client.model.ref.ScRef
 import ostis.jesc.client.model.request.payload.entry.ScContentType
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.ctx.etc.ScLinkContent
-import ostis.jesc.ctx.set.ScSet
-import ostis.jesc.ctx.set.ScSetImpl
+import ostis.jesc.ctx.set.ScAddrSet
+import ostis.jesc.ctx.set.ScAddrSetImpl
 import java.util.*
 import kotlin.jvm.optionals.getOrNull
 
@@ -49,9 +49,9 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
     }
 
     override fun structs() = object : ScCtx.Structs {
-        override fun set(): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = createNode(ScType.NODE_CONST_STRUCT))
-        override fun set(type: ScType): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = createNode(type))
-        override fun set(addr: ScAddr): ScSet = ScSetImpl(ctx = this@ScCtxImpl, addr = addr)
+        override fun set(): ScAddrSet = ScAddrSetImpl(ctx = this@ScCtxImpl, addr = createNode(ScType.NODE_CONST_STRUCT))
+        override fun set(type: ScType): ScAddrSet = ScAddrSetImpl(ctx = this@ScCtxImpl, addr = createNode(type))
+        override fun set(addr: ScAddr): ScAddrSet = ScAddrSetImpl(ctx = this@ScCtxImpl, addr = addr)
     }
 
     override fun createEvent(addr: ScAddr, eventType: ScEventType): Long {
@@ -110,6 +110,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         return linkAddr?.let { getLinkContent(it)!!.string() }
     }
 
+    override fun setLinkContent(addr: ScAddr, content: Any, contentType: ScContentType) {
+        api.content().set(addr, content, contentType).execute()
+    }
+
     override fun getRelationTargets(addr: ScAddr, relAddr: ScAddr, relType: ScType): List<ScAddr> {
         return api.searchByTemplate()
             .triplet(
@@ -118,7 +122,7 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
                 ScRef.type(ScType.VAR)
             )
             .triplet(
-                ScRef.addr(addr),
+                ScRef.addr(relAddr),
                 ScRef.type(ScType.EDGE_ACCESS_VAR_POS_PERM),
                 ScRef.alias("edge")
             )
@@ -143,10 +147,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
     }
 
     override fun getRelationTarget(addr: ScAddr, relAddr: ScAddr, relType: ScType) =
-        getRelationTargets(addr, relAddr, relType)[0]
+        getRelationTargets(addr, relAddr, relType).getOrNull(0)
 
     override fun getRelationSource(addr: ScAddr, relAddr: ScAddr, relType: ScType) =
-        getRelationSources(addr, relAddr, relType)[0]
+        getRelationSources(addr, relAddr, relType).getOrNull(0)
 
     override fun getRoleRelationTargets(addr: ScAddr, rrelAddr: ScAddr) =
         getRelationTargets(addr, rrelAddr, ScType.EDGE_ACCESS_VAR_POS_PERM)
@@ -155,10 +159,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         getRelationSources(addr, rrelAddr, ScType.EDGE_ACCESS_VAR_POS_PERM)
 
     override fun getRoleRelationTarget(addr: ScAddr, rrelAddr: ScAddr) =
-        getRoleRelationTargets(addr, rrelAddr)[0]
+        getRoleRelationTargets(addr, rrelAddr).getOrNull(0)
 
     override fun getRoleRelationSource(addr: ScAddr, rrelAddr: ScAddr) =
-        getRoleRelationSources(addr, rrelAddr)[0]
+        getRoleRelationSources(addr, rrelAddr).getOrNull(0)
 
     override fun getNoRoleRelationTargets(addr: ScAddr, nrelAddr: ScAddr) =
         getRelationTargets(addr, nrelAddr, ScType.EDGE_D_COMMON_VAR)
@@ -167,10 +171,10 @@ class ScCtxImpl(override val api: ScApi): ScCtx {
         getRelationSources(addr, nrelAddr, ScType.EDGE_D_COMMON_VAR)
 
     override fun getNoRoleRelationTarget(addr: ScAddr, nrelAddr: ScAddr) =
-        getNoRoleRelationTargets(addr, nrelAddr)[0]
+        getNoRoleRelationTargets(addr, nrelAddr).getOrNull(0)
 
     override fun getNoRoleRelationSource(addr: ScAddr, nrelAddr: ScAddr) =
-        getNoRoleRelationSources(addr, nrelAddr)[0]
+        getNoRoleRelationSources(addr, nrelAddr).getOrNull(0)
 
     override fun getElements(set: ScAddr): List<ScAddr> = api.searchByTemplate()
         .triplet(

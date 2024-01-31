@@ -5,7 +5,7 @@ import ostis.jesc.client.model.ref.ScRef
 import ostis.jesc.client.model.type.ScType
 import ostis.jesc.memory.ScMemory
 import ostis.jesc.memory.ScMemoryException
-import ostis.jesc.memory.ScTriplet
+import ostis.jesc.memory.common.ScTriplet
 import ostis.jesc.memory.element.BaseScElement
 
 class ScEdgeImpl(memory: ScMemory, addr: ScAddr): BaseScElement(memory, addr), ScEdge {
